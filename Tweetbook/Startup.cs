@@ -56,14 +56,14 @@ namespace Tweetbook
             }
 
             var swaggerOptions = new Options.SwaggerOptions();
-            Configuration.GetSection(nameof(Options.SwaggerOptions)).Bind(swaggerOptions);
+            Configuration.GetSection(nameof(Options.SwaggerOptions)).Bind(swaggerOptions); //appsetting.json'daki SwaggerOptions'ı ,class'ımıza bağlıyoruz
 
             app.UseSwagger(option =>
             option.RouteTemplate = swaggerOptions.JsonRoute
             );
 
             app.UseSwaggerUI(option =>
-                option.SwaggerEndpoint(swaggerOptions.UiEndpoint, swaggerOptions.Description)
+                option.SwaggerEndpoint(swaggerOptions.UIEndpoint, swaggerOptions.Description)
                 );
 
             app.UseHttpsRedirection();
