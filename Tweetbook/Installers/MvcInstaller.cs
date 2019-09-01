@@ -21,7 +21,7 @@ namespace Tweetbook.Installers
                 x.SwaggerDoc("v1", new Info { Title = "TweetBook API", Version = "v1" });
             });
 
-            services.AddSingleton<IPostServices, PostService>();
+            services.AddScoped<IPostServices, PostService>();
         }
     }
 }
