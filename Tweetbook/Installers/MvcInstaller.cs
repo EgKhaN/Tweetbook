@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
+using Tweetbook.Services;
 
 namespace Tweetbook.Installers
 {
@@ -19,6 +20,8 @@ namespace Tweetbook.Installers
             {
                 x.SwaggerDoc("v1", new Info { Title = "TweetBook API", Version = "v1" });
             });
+
+            services.AddSingleton<IPostServices, PostService>();
         }
     }
 }
