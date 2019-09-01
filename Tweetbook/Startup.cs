@@ -60,6 +60,8 @@ namespace Tweetbook
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
 
             app.UseMvc(routes =>
             {

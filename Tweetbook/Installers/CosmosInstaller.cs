@@ -15,14 +15,14 @@ namespace Tweetbook.Installers
     {
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
-            var cosmosStoreSettings = new CosmosStoreSettings(
-                configuration["CosmosSettings:DatabaseName"],
-                configuration["CosmosSettings:AccountUri"],
-                configuration["CosmosSettings:AccountKey"],
-                new ConnectionPolicy { ConnectionMode = ConnectionMode.Direct , ConnectionProtocol = Protocol.Tcp}
-                );
+            //var cosmosStoreSettings = new CosmosStoreSettings(
+            //    configuration["CosmosSettings:DatabaseName"],
+            //    configuration["CosmosSettings:AccountUri"],
+            //    configuration["CosmosSettings:AccountKey"],
+            //    new ConnectionPolicy { ConnectionMode = ConnectionMode.Direct , ConnectionProtocol = Protocol.Tcp}
+            //    );
 
-            services.AddCosmosStore<CosmosPostDto>(cosmosStoreSettings);
+            //services.AddCosmosStore<CosmosPostDto>(cosmosStoreSettings);
         }
     }
 }
