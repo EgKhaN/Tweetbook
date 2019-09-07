@@ -15,7 +15,7 @@ namespace Tweetbook.Installers
         public void InstallServices(IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<DataContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultCollection")));
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<DataContext>();
+            //services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<DataContext>();
         }
     }
 }
