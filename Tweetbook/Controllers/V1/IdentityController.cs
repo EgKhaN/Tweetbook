@@ -25,6 +25,14 @@ namespace Tweetbook.Controllers.V1
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody]UserRegistrationRequest request)
         {
+            if(!ModelState.IsValid)
+            {
+               return BadRequest(new AuthFailedResponse
+               {
+                   Errors = ModelState.Values.SelectMany(q => q.Errors.Select(a => a.ErrorMessage))
+               });
+            }
+
             var authResponse = await identityService.RegisterAsync(request.Email, request.Password);
 
             if (!authResponse.IsSuccess)
@@ -34,6 +42,23 @@ namespace Tweetbook.Controllers.V1
                 });
 
             return Ok(new AuthSuccessResponse {
+                Token = authResponse.Token
+            });
+        }
+
+        [HttpPost(ApiRoutes.Identity.Login)]
+        public async Task<IActionResult> Login([FromBody]UserLoginRequest request)
+        {
+            var authResponse = await identityService.LoginAsync(request.Email, request.Password);
+
+            if (!authResponse.IsSuccess)
+                return BadRequest(new AuthFailedResponse
+                {
+                    Errors = authResponse.Errors
+                });
+
+            return Ok(new AuthSuccessResponse
+            {
                 Token = authResponse.Token
             });
         }
