@@ -5,12 +5,8 @@ using System.Threading.Tasks;
 
 namespace Tweetbook.Contracts.V1.Responses
 {
-    public class PostResponse
+    public class ErrorResponse
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-
-        public string UserId { get; set; }
-
+        public List<ErrorModel> Errors { get; set; } = new List<ErrorModel>();
     }
 }
