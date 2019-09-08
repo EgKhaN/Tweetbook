@@ -16,6 +16,7 @@ using Tweetbook.Services;
 namespace Tweetbook.Controllers.V1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Produces("application/json")]
     public class PostsController : Controller
     {
         private IPostServices _postService;
@@ -25,6 +26,11 @@ namespace Tweetbook.Controllers.V1
             _postService = postService;
         }
 
+        /// <summary>
+        ///Returns all the Posts in the system
+        /// </summary>
+        /// <response code="200">Returns all the tags in the system</response>
+        /// <response code="401">Freaking authorize man!</response>
         [HttpGet(ApiRoutes.Posts.GetAll)]
         public async Task<IActionResult> GetAll()
         {
@@ -42,15 +48,37 @@ namespace Tweetbook.Controllers.V1
             return Ok(post);
         }
 
+        /// <summary>
+        /// Creates post
+        /// </summary>
+        /// <remarks>
+        ///     Sample **Request**:
+        ///     
+        ///     POST /api/v1/tags
+        ///     {
+        ///         "name": "Some name"
+        ///     }
+        /// </remarks>
+        /// <response code="201">Post Created</response>
+        /// <response code="400">Unable to create Posts</response>
+        /// <response code="401">Freaking authorize man!</response>
         [HttpPost(ApiRoutes.Posts.Create)]
+        [ProducesResponseType(typeof(PostResponse), 201)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
         public async Task<IActionResult> Create([FromBody] CreatePostRequest postRequest)
         {
-            var post = new Post {
+            var post = new Post
+            {
                 Name = postRequest.Name,
                 UserId = HttpContext.GetUserId()
             };
 
-            await _postService.CreatePostAsync(post);
+            var created = await _postService.CreatePostAsync(post);
+
+            if (!created)
+            {
+                return BadRequest(new ErrorResponse { Errors = new List<ErrorModel> { new ErrorModel { Message = "Unable to create post" } } });
+            }
 
             var baseUrl = $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host.ToUriComponent()}";
             var locationUri = baseUrl + "/" + ApiRoutes.Posts.Get.Replace("{postId}", post.Id.ToString()); //user bunu nereden retrieve eder
@@ -60,11 +88,11 @@ namespace Tweetbook.Controllers.V1
         }
 
         [HttpPut(ApiRoutes.Posts.Update)]
-        public async Task<IActionResult> Update([FromRoute] Guid postId , [FromBody] UpdatePostRequest request)
+        public async Task<IActionResult> Update([FromRoute] Guid postId, [FromBody] UpdatePostRequest request)
         {
             bool userOwnsPost = await _postService.UserOwnsPostAsync(postId, HttpContext.GetUserId());
 
-            if(!userOwnsPost)
+            if (!userOwnsPost)
             {
                 return BadRequest(new { error = "You do not own this post" });
             }
@@ -73,8 +101,8 @@ namespace Tweetbook.Controllers.V1
             post.Name = request.Name;
 
             var updated = await _postService.UpdatePostAsync(post);
-            
-            if(updated)
+
+            if (updated)
                 return Ok(post);
 
             return NotFound();

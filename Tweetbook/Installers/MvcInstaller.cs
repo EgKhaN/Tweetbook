@@ -62,25 +62,6 @@ namespace Tweetbook.Installers
 
             services.AddSingleton(tokenValidationParameters);
 
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc("v1", new Info { Title = "TweetBook API", Version = "v1" });
-
-                var security = new Dictionary<string, IEnumerable<string>>
-                {
-                    {"Bearer", new string[0] }
-                };
-
-                x.AddSecurityDefinition("Bearer", new ApiKeyScheme
-                {
-                    Description = "JWt authorization usin the bearer scheme",
-                    Name = "Authorization",
-                    In = "header",
-                    Type = "apiKey"
-                });
-
-                x.AddSecurityRequirement(security);
-            });
 
 
 
