@@ -11,9 +11,7 @@ using Tweetbook.Services;
 
 namespace Tweetbook.Controllers.V1
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class IdentityController : ControllerBase
+    public class IdentityController : Controller
     {
         private readonly IIdentityService identityService;
 
