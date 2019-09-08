@@ -31,7 +31,7 @@ namespace TweetBook.IntegrationTests
         [Fact]
         public async Task Get_ReturnsPost_WhenPostExistsInDatabase()
         {
-            //await AuthenticateAsync();
+            await AuthenticateAsync();
 
             var createdPost = await CreatePostAsync(new CreatePostRequest { Name = "Test post"});
 
